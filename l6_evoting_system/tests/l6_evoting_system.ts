@@ -81,7 +81,7 @@ describe("l6_evoting_system", async () => {
     it("Initialize candidate!", async () => {
         const now = Math.floor(new Date().getTime() / 1000);
         const startTime = new BN(now);
-        const endTime = new BN(now + 15);
+        const endTime = new BN(now + 7);
 
         await program.methods
             .initialize(startTime, endTime)
@@ -101,27 +101,7 @@ describe("l6_evoting_system", async () => {
             .rpc();
     });
 
-    it("Vote!", async () => {
-        await program.methods
-            .vote(new BN(1))
-            .accounts({
-                authority: provider.wallet.publicKey,
-                candidate: candidate.publicKey,
-                treasurer,
-                mint: mint.publicKey,
-                candidateTokenAccount,
-                ballot,
-                voterTokenAccount: walletTokenAccount,
-
-                // system
-                tokenProgram: utils.token.TOKEN_PROGRAM_ID,
-                associatedTokenProgram: utils.token.ASSOCIATED_PROGRAM_ID,
-                systemProgram: web3.SystemProgram.programId,
-                rent: web3.SYSVAR_RENT_PUBKEY,
-            })
-            .signers([])
-            .rpc();
-    });
+    // await new Promise((resolve) => setTimeout(resolve, 1000));
 
     it("Vote!", async () => {
         await program.methods
@@ -145,9 +125,8 @@ describe("l6_evoting_system", async () => {
             .rpc();
     });
 
-    await new Promise((resolve) => setTimeout(resolve, 10));
-
-    it("Close!", async () => {
+    it("Close ---> !", async () => {
+        await new Promise((resolve) => setTimeout(resolve, 8000));
         await program.methods
             .close()
             .accounts({
