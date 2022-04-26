@@ -101,9 +101,8 @@ describe("l6_evoting_system", async () => {
             .rpc();
     });
 
-    // await new Promise((resolve) => setTimeout(resolve, 1000));
-
     it("Vote!", async () => {
+        await new Promise((resolve) => setTimeout(resolve, 1000));
         await program.methods
             .vote(new BN(1))
             .accounts({
@@ -126,7 +125,7 @@ describe("l6_evoting_system", async () => {
     });
 
     it("Close ---> !", async () => {
-        await new Promise((resolve) => setTimeout(resolve, 8000));
+        await new Promise((resolve) => setTimeout(resolve, 7000));
         await program.methods
             .close()
             .accounts({
