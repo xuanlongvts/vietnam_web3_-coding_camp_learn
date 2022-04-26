@@ -12,7 +12,7 @@ import {
 import { L6EvotingSystem } from "../target/types/l6_evoting_system";
 import { initializeMint, initializeAccount } from "./init";
 
-describe("l6_evoting_system", () => {
+describe("l6_evoting_system", async () => {
     // Configure the client to use the local cluster.
     const provider = AnchorProvider.env();
     setProvider(provider);
@@ -81,7 +81,7 @@ describe("l6_evoting_system", () => {
     it("Initialize candidate!", async () => {
         const now = Math.floor(new Date().getTime() / 1000);
         const startTime = new BN(now);
-        const endTime = new BN(now + 5);
+        const endTime = new BN(now + 15);
 
         await program.methods
             .initialize(startTime, endTime)
@@ -98,6 +98,74 @@ describe("l6_evoting_system", () => {
                 rent: web3.SYSVAR_RENT_PUBKEY,
             })
             .signers([candidate])
+            .rpc();
+    });
+
+    it("Vote!", async () => {
+        await program.methods
+            .vote(new BN(1))
+            .accounts({
+                authority: provider.wallet.publicKey,
+                candidate: candidate.publicKey,
+                treasurer,
+                mint: mint.publicKey,
+                candidateTokenAccount,
+                ballot,
+                voterTokenAccount: walletTokenAccount,
+
+                // system
+                tokenProgram: utils.token.TOKEN_PROGRAM_ID,
+                associatedTokenProgram: utils.token.ASSOCIATED_PROGRAM_ID,
+                systemProgram: web3.SystemProgram.programId,
+                rent: web3.SYSVAR_RENT_PUBKEY,
+            })
+            .signers([])
+            .rpc();
+    });
+
+    it("Vote!", async () => {
+        await program.methods
+            .vote(new BN(1))
+            .accounts({
+                authority: provider.wallet.publicKey,
+                candidate: candidate.publicKey,
+                treasurer,
+                mint: mint.publicKey,
+                candidateTokenAccount,
+                ballot,
+                voterTokenAccount: walletTokenAccount,
+
+                // system
+                tokenProgram: utils.token.TOKEN_PROGRAM_ID,
+                associatedTokenProgram: utils.token.ASSOCIATED_PROGRAM_ID,
+                systemProgram: web3.SystemProgram.programId,
+                rent: web3.SYSVAR_RENT_PUBKEY,
+            })
+            .signers([])
+            .rpc();
+    });
+
+    await new Promise((resolve) => setTimeout(resolve, 10));
+
+    it("Close!", async () => {
+        await program.methods
+            .close()
+            .accounts({
+                authority: provider.wallet.publicKey,
+                candidate: candidate.publicKey,
+                treasurer,
+                mint: mint.publicKey,
+                candidateTokenAccount,
+                ballot,
+                voterTokenAccount: walletTokenAccount,
+
+                // system
+                tokenProgram: utils.token.TOKEN_PROGRAM_ID,
+                associatedTokenProgram: utils.token.ASSOCIATED_PROGRAM_ID,
+                systemProgram: web3.SystemProgram.programId,
+                rent: web3.SYSVAR_RENT_PUBKEY,
+            })
+            .signers([])
             .rpc();
     });
 });
