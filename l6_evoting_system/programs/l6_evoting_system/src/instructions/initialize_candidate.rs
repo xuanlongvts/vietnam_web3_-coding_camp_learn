@@ -18,7 +18,7 @@ pub struct InitializeCandidate<'info> {
 
     // System Program Address
     pub system_program: Program<'info, System>,
-    pub token_program: Program<'info, System>,
+    pub token_program: Program<'info, token::Token>,
     pub associated_token_program: Program<'info, associated_token::AssociatedToken>,
     pub rent: Sysvar<'info, Rent>,
 }

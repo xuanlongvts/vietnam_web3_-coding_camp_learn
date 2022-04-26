@@ -12,6 +12,8 @@ pub struct Close<'info> {
     #[account(mut, has_one = mint)]
     pub candidate: Account<'info, Candidate>,
     pub mint: Box<Account<'info, token::Mint>>,
+
+	#[account(seeds = [b"treasurer", &candidate.key().to_bytes()], bump)]
 	/// CHECK: Just a pure account
 	pub treasurer: AccountInfo<'info>,
 
